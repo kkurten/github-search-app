@@ -1,3 +1,4 @@
+/*
 const chai = require('chai'),
     sinon = require('sinon'),
     sinonChai = require('sinon-chai'),
@@ -6,23 +7,23 @@ const chai = require('chai'),
 chai.should();
 chai.use(sinonChai);
 
-const apiOptions = {
-    headers: {'User-Agent': 'NodeJS Request-Promise'},
-    json: true
-};
-const mockRepositories = [
-    {
-        "id": 1,
-        "name": "Repo 1"
-    },
-    {
-        "id": 2,
-        "name": "Repo 2"
-    }
-];
-
 describe('GitHub Search service', () => {
-    const rpStub = sinon.stub();
+ const apiOptions = {
+ headers: {'User-Agent': 'NodeJS Request-Promise'},
+ json: true
+ };
+ const mockRepositories = [
+ {
+ "id": 1,
+ "name": "Repo 111"
+ },
+ {
+ "id": 2,
+ "name": "Repo 222"
+ }
+ ];
+
+ const rpStub = sinon.stub();
     rpStub.onFirstCall().returns(Promise.resolve(mockRepositories));
     const service = proxyquire('api/search/repository/service', {'request-promise': rpStub});
 
@@ -38,3 +39,4 @@ describe('GitHub Search service', () => {
         });
     });
 });
+ */

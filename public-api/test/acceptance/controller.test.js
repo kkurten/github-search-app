@@ -1,33 +1,50 @@
-const request = require('supertest');
-const proxyquire = require('proxyquire');
-const server = require('../support/server');
+const request = require('supertest'),
+    sinon = require('sinon'),
+    proxyquire = require('proxyquire'),
+    server = require('../support/server');
 
-const repositories = [
-    {
-        "total_count": 3,
-        "items": [
-            {
-                "id": 1,
-                "full_name": "Repo 1"
+const repositories =
+{
+    "total_count": 3,
+    "items": [
+        {
+            "name": "Repo 1",
+            "html_url": "URL 1",
+            "owner": {
+                "login": "Owner 1"
             },
-            {
-                "id": 2,
-                "full_name": "Repo 2"
+            "stargazers_count": 10
+        },
+        {
+            "name": "Repo 2",
+            "html_url": "URL 2",
+            "owner": {
+                "login": "Owner 2"
             },
-            {
-                "id": 3,
-                "full_name": "Repo 3"
-            }
-        ]
-    }
-];
-const serviceMock = {};
-
-const controller = proxyquire('api/search/repository/controller', {'./service': serviceMock});
+            "stargazers_count": 50
+        },
+        {
+            "name": "Repo 3",
+            "html_url": "URL 3",
+            "owner": {
+                "login": "Owner 3"
+            },
+            "stargazers_count": 20
+        }
+    ]
+};
 
 describe('/api/v1', () => {
-    let app;
+    let app, searchStub;
     beforeEach((done) => {
+        searchStub = sinon.stub();
+        searchStub.withArgs({query: "valid"}).returns(Promise.resolve(repositories));
+        searchStub.withArgs({query: "invalid"}).returns(Promise.reject());
+        const serviceMock = {
+            search: searchStub
+        };
+        proxyquire('api/search/repository/controller', {'./service': serviceMock});
+
         app = server.express();
         server.beforeEach(app, () => {
             done();
@@ -36,27 +53,19 @@ describe('/api/v1', () => {
 
     describe('/search/repository', () => {
         describe('valid search query', () => {
-            serviceMock.search = (params) => {
-                return Promise.resolve(repositories);
-            };
-
-            it('returns 200 with repositories', () => {
+            it('returns 200 with repositories', (done) => {
                 request(app)
-                    .post('/api/search/repositories')
-                    .send({query: "test"})
-                    .expect(200, repositories);
+                    .post('/api/v1/search/repositories')
+                    .send({query: "valid"})
+                    .expect(200, done);
             });
         });
         describe('search query fails', () => {
-            serviceMock.search = (params) => {
-                return Promise.reject();
-            };
-
-            it('returns 500', () => {
+            it('returns 500', (done) => {
                 request(app)
                     .post('/api/v1/search/repositories')
-                    .send({query: "test"})
-                    .expect(500);
+                    .send({query: "invalid"})
+                    .expect(500, done);
             });
         });
     });
