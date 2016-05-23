@@ -26,7 +26,7 @@ const serviceMock = {};
 const controller = proxyquire('api/search/repository/controller', {'./service': serviceMock});
 
 describe('/api/v1', () => {
-    var app;
+    let app;
     beforeEach((done) => {
         app = server.express();
         server.beforeEach(app, () => {

@@ -1,4 +1,4 @@
---require should
+--require chai
 --require test/support/env
 --reporter spec
 --check-leaks
