@@ -1,45 +1,18 @@
 const request = require('supertest'),
     sinon = require('sinon'),
     proxyquire = require('proxyquire'),
-    server = require('../support/server');
+    server = require('../support/server'),
+    jsonfile = require('jsonfile');
 
-const repositories =
-{
-    "total_count": 3,
-    "items": [
-        {
-            "name": "Repo 1",
-            "html_url": "URL 1",
-            "owner": {
-                "login": "Owner 1"
-            },
-            "stargazers_count": 10
-        },
-        {
-            "name": "Repo 2",
-            "html_url": "URL 2",
-            "owner": {
-                "login": "Owner 2"
-            },
-            "stargazers_count": 50
-        },
-        {
-            "name": "Repo 3",
-            "html_url": "URL 3",
-            "owner": {
-                "login": "Owner 3"
-            },
-            "stargazers_count": 20
-        }
-    ]
-};
+const mockServiceRepositories = jsonfile.readFileSync(__dirname + '/../fixtures/github-repositories-api-response.json');
+const expectedSearchApiResponse = jsonfile.readFileSync(__dirname + '/../fixtures/search-api-response.json');
 
-describe('/api/v1', () => {
+describe('/api/v1/search/repository', () => {
     let app, searchStub;
     beforeEach((done) => {
         searchStub = sinon.stub();
-        searchStub.withArgs({query: "valid"}).returns(Promise.resolve(repositories));
-        searchStub.withArgs({query: "invalid"}).returns(Promise.reject());
+        searchStub.withArgs({query: "valid"}).returns(Promise.resolve(mockServiceRepositories));
+        searchStub.withArgs({query: "invalid"}).returns(Promise.reject('mock failure'));
         const serviceMock = {
             search: searchStub
         };
@@ -51,22 +24,20 @@ describe('/api/v1', () => {
         });
     });
 
-    describe('/search/repository', () => {
-        describe('valid search query', () => {
-            it('returns 200 with repositories', (done) => {
-                request(app)
-                    .post('/api/v1/search/repositories')
-                    .send({query: "valid"})
-                    .expect(200, done);
-            });
+    describe('valid search query', () => {
+        it('returns 200 with repositories', (done) => {
+            request(app)
+                .post('/api/v1/search/repositories')
+                .send({query: "valid"})
+                .expect(200, expectedSearchApiResponse, done);
         });
-        describe('search query fails', () => {
-            it('returns 500', (done) => {
-                request(app)
-                    .post('/api/v1/search/repositories')
-                    .send({query: "invalid"})
-                    .expect(500, done);
-            });
+    });
+    describe('search query fails', () => {
+        it('returns 500', (done) => {
+            request(app)
+                .post('/api/v1/search/repositories')
+                .send({query: "invalid"})
+                .expect(500, done);
         });
     });
 });

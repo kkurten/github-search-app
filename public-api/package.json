@@ -29,15 +29,16 @@
   },
   "devDependencies": {
     "after": "^0.8.1",
-    "istanbul": "^0.4.2",
-    "mocha": "^2.1.0",
     "chai": "^3.5.0",
+    "istanbul": "^0.4.2",
     "jshint": "^2.5.x",
+    "jsonfile": "^2.3.1",
+    "mocha": "^2.1.0",
     "nock": "^7.2.2",
+    "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0",
-    "supertest": "^1.2.0",
-    "proxyquire": "^1.7.4"
+    "supertest": "^1.2.0"
   },
   "scripts": {
     "start": "./bin/start.sh",

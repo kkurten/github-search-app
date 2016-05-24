@@ -18,7 +18,7 @@ module.exports.search = (req, res) => {
             return res.status(200).json(repositoriesResponse);
         })
         .catch(error => {
-            log.error("Failed to search repositories", error);
+            log.error("Repository search failed:", error);
             return res.status(500).end();
         });
 };

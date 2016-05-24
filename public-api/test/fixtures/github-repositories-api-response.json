@@ -1,0 +1,29 @@
+{
+  "total_count": 3,
+  "items": [
+    {
+      "name": "Repo 1",
+      "html_url": "URL 1",
+      "owner": {
+        "login": "Owner 1"
+      },
+      "stargazers_count": 100
+    },
+    {
+      "name": "Repo 2",
+      "html_url": "URL 2",
+      "owner": {
+        "login": "Owner 2"
+      },
+      "stargazers_count": 50
+    },
+    {
+      "name": "Repo 3",
+      "html_url": "URL 3",
+      "owner": {
+        "login": "Owner 3"
+      },
+      "stargazers_count": 10
+    }
+  ]
+}

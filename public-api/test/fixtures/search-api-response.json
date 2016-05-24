@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Repo 1",
+    "url": "URL 1",
+    "owner": "Owner 1",
+    "stars": 100
+  },
+  {
+    "name": "Repo 2",
+    "url": "URL 2",
+    "owner": "Owner 2",
+    "stars": 50
+  },
+  {
+    "name": "Repo 3",
+    "url": "URL 3",
+    "owner": "Owner 3",
+    "stars": 10
+  }
+]
