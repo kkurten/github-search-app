@@ -11,7 +11,7 @@ export const GitHubSearch = (props) => {
           return;
         }
 
-        props.requestSearch(searchInput.value)
+        props.search(searchInput.value)
         searchInput.value = ''
       }}>
 
@@ -30,7 +30,7 @@ export const GitHubSearch = (props) => {
 }
 
 GitHubSearch.propTypes = {
-  requestSearch: React.PropTypes.func.isRequired
+  search: React.PropTypes.func.isRequired
 }
 
 export default GitHubSearch

@@ -1,36 +1,74 @@
-export const REQUEST_SEARCH = 'REQUEST_SEARCH'
-export const RECIEVE_SEARCH = 'RECIEVE_SEARCH'
+export const REQUEST_SEARCH = "REQUEST_SEARCH"
+export const RECEIVE_SEARCH = "RECEIVE_SEARCH"
+export const FAILED_SEARCH = "FAILED_SEARCH"
 
-export function requestSearch(repositoryName) {
+export function requestSearch() {
   return {
-    type: REQUEST_SEARCH,
-    repositoryName: repositoryName
+    type: REQUEST_SEARCH
   }
 }
 
-export function receiveSearch() {
+export function receiveSearch(repositories) {
   return {
-    type: RECIEVE_SEARCH
+    type: RECEIVE_SEARCH,
+    repositories: repositories
   }
 }
 
-export const actions = {
-  requestSearch,
-  receiveSearch
+export function failedSearch() {
+  return {
+    type: FAILED_SEARCH
+  }
+}
+
+export function search(repositoryName) {
+  return (dispatch) => {
+    dispatch(requestSearch())
+    const requestOptions = {
+      method: "POST",
+      headers: new Headers({
+        "Content-type": "application/json"
+      }),
+      body: JSON.stringify({
+        query: repositoryName
+      })
+    }
+    return fetch(`/api/v1/search/repositories`, requestOptions)
+      .then(response => response.json())
+      .then(repositories => {
+        console.log("received repositories", JSON.stringify(repositories))
+        dispatch(receiveSearch(repositories))
+      })
+      .catch(error => {
+        console.log("Search failed", error)
+        dispatch(failedSearch())
+      })
+  }
 }
 
 const ACTION_HANDLERS = {
   [REQUEST_SEARCH]: (state, action) => {
-    console.log('search repository name', state, action)
-    return action.repositoryName
+    console.log("Request search handler", state, action)
+    return Object.assign({}, state, {
+      isSearching: true
+    })
   },
-  [RECIEVE_SEARCH]: (state, action) => {
-    console.log('received search response', state, action)
+  [RECEIVE_SEARCH]: (state, action) => {
+    console.log("Receive search handler", state, action)
+    return Object.assign({}, state, {
+      isSearching: false
+    })
+  },
+  [FAILED_SEARCH]: (state, action) => {
+    console.log("Failed search handler", state, action)
+    return Object.assign({}, state, {
+      isSearching: false
+    })
   }
 }
 
-export default function gitHubSearchReducer(state = '', action) {
-  const handler =  ACTION_HANDLERS[action.type]
+export default function gitHubSearchReducer(state = {isSearching: false}, action) {
+  const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
 }
