@@ -47,21 +47,18 @@ export function findRepositories(repositoryName) {
 }
 
 const ACTION_HANDLERS = {
-  [REQUEST_SEARCH]: (state, action) => {
-    console.log("Request search handler", state, action)
+  [REQUEST_SEARCH]: (state) => {
     return Object.assign({}, state, {
       isSearching: true
     })
   },
   [RECEIVE_SEARCH]: (state, action) => {
-    console.log("Receive search handler", state, action)
     return Object.assign({}, state, {
       isSearching: false,
       repositories: action.repositories
     })
   },
-  [FAILED_SEARCH]: (state, action) => {
-    console.log("Failed search handler", state, action)
+  [FAILED_SEARCH]: (state) => {
     return Object.assign({}, state, {
       isSearching: false
     })
@@ -73,7 +70,6 @@ const initialState = {
   repositories: []
 }
 export default function gitHubSearchReducer(state = initialState, action) {
-  console.log("state & action", state, action)
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state

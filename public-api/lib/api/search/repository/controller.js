@@ -39,8 +39,9 @@ function buildResponse(repositories) {
     const top10StarredRepositories = _.take(repositories.items, maxSearchResults);
 
     return _
-        .map(top10StarredRepositories, (repository) => {
+        .map(top10StarredRepositories, (repository, idx) => {
             return {
+                id: idx + 1,
                 name: repository.name,
                 url: repository.html_url,
                 owner: repository.owner.login,

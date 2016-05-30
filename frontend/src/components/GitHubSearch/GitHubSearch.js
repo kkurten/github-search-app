@@ -1,5 +1,5 @@
 import React from "react"
-import classes from "./GitHubSearch.scss"
+import GitHubSearchResult from "../GitHubSearchResult"
 
 export const GitHubSearch = (props) => {
   let searchInput
@@ -27,31 +27,7 @@ export const GitHubSearch = (props) => {
         </button>
       </form>
 
-      {props.repositories.length > 0 ?
-        <div className={classes.repositoriesContainer}>
-          <table className="table table-striped">
-            <thead>
-            <tr>
-              <th>Stars</th>
-              <th>Name</th>
-              <th>Owner</th>
-              <th>URL</th>
-            </tr>
-            </thead>
-            <tbody>
-            {props.repositories.map(repository =>
-              <tr>
-                <td>{repository.stars}</td>
-                <td>{repository.name}</td>
-                <td>{repository.owner}</td>
-                <td><a href={repository.url}>{repository.url}</a></td>
-              </tr>
-            )}
-            </tbody>
-          </table>
-        </div>
-        : null
-      }
+      <GitHubSearchResult isSearching={props.isSearching} repositories={props.repositories}/>
     </div>
   )
 }
