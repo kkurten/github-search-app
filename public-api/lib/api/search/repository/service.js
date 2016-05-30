@@ -7,7 +7,7 @@ class RepositorySearchService {
     }
 
     buildSearchUrl(params) {
-        return this.apiBaseUrl + `?q=${params.query}&sort=stars&order=desc`;
+        return this.apiBaseUrl + `?q=${params.query}+in:name&sort=stars&order=desc`;
     }
 
     search(params) {
