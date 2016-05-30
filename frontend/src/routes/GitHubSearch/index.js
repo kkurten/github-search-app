@@ -8,7 +8,7 @@ export default (store) => ({
       const gitHubSearchReducer = require('./modules/github-search').default
 
       injectReducer(store, {
-        key: 'github-search',
+        key: 'search',
         reducer: gitHubSearchReducer
       })
 

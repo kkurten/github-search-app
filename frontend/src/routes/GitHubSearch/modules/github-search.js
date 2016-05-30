@@ -21,7 +21,7 @@ export function failedSearch() {
   }
 }
 
-export function search(repositoryName) {
+export function findRepositories(repositoryName) {
   return (dispatch) => {
     dispatch(requestSearch())
     const requestOptions = {
@@ -56,7 +56,8 @@ const ACTION_HANDLERS = {
   [RECEIVE_SEARCH]: (state, action) => {
     console.log("Receive search handler", state, action)
     return Object.assign({}, state, {
-      isSearching: false
+      isSearching: false,
+      repositories: action.repositories
     })
   },
   [FAILED_SEARCH]: (state, action) => {
@@ -67,7 +68,12 @@ const ACTION_HANDLERS = {
   }
 }
 
-export default function gitHubSearchReducer(state = {isSearching: false}, action) {
+const initialState = {
+  isSearching: false,
+  repositories: []
+}
+export default function gitHubSearchReducer(state = initialState, action) {
+  console.log("state & action", state, action)
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
