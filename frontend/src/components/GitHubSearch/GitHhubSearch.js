@@ -5,7 +5,6 @@ export const GitHubSearch = (props) => {
 
   return (
     <div>
-      <h2>Search TOP10 most starred GitHub repositories by name</h2>
       <form onSubmit={e => {
         e.preventDefault()
         if (!searchInput.value.trim()) {
@@ -14,16 +13,17 @@ export const GitHubSearch = (props) => {
 
         props.requestSearch(searchInput.value)
         searchInput.value = ''
-    }}>
-        <input ref={input => {
-          searchInput = input
-        }}/>
+      }}>
 
-        <p>
-          <button type='submit'>
-            Search
-          </button>
-        </p>
+        <div className="form-group">
+          <label for="searchInput">Search most popular repositories by name</label>
+          <input ref={input => {
+            searchInput = input
+          }} id="searchInput" className="form-control"/>
+        </div>
+        <button type="submit" className="btn btn-default">
+          Search
+        </button>
       </form>
     </div>
   )
